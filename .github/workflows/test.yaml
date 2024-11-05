@@ -61,8 +61,8 @@ jobs:
           const title = dom.window.document.querySelector('title')?.textContent;
 
           if(title){
-           exit 0;
+           process.exit(0);
           }else{
-          exit 1;
+          process.exit(1);
           }
           "
