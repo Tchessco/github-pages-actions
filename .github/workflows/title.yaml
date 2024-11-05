@@ -1,0 +1,64 @@
+name: Change index.html title
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering of the workflow
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  generate-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: npm_installer
+        run: npm install jsdom
+
+      - name: the_copy_cat
+        run: |
+          node -e "
+          const fs = require('fs');
+          const { JSDOM } = require('jsdom');
+          
+          // Load index.html
+          const htmlContent = fs.readFileSync('index.html', 'utf-8');
+          const dom = new JSDOM(htmlContent);
+          
+          // Extract <title> and first <p> as description
+          const title = ${{ inputs.logLevel }};
+          const description = dom.window.document.querySelector('p')?.textContent || 'Description not available.';
+          
+          // Generate README content
+          const readmeContent = \`# \${title}\n\n\${description}\n\nThis README was generated automatically from index.html.\`;
+          
+          // Write to README.md
+          fs.writeFileSync('README.md', readmeContent);
+          "
+
+      - name: git_steps
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Auto-generate README from index.html"
+          git push
