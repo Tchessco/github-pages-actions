@@ -6,12 +6,12 @@ on:
       - main
   workflow_dispatch: # Allows manual triggering of the workflow
     inputs:
-      logLevel:
-        description: 'Log level'
+      title:
+        description: 'Title to change'
         required: true
-        default: 'warning'
+        default: 'Empty input'
       tags:
-        description: 'Test scenario tags'
+        description: 'Custom Title'
 
 permissions:
   contents: write
@@ -45,7 +45,7 @@ jobs:
           const dom = new JSDOM(htmlContent);
           
           // Extract <title> and first <p> as description
-          const title = '${{ inputs.logLevel }}';
+          const title = '${{ inputs.title }}';
           const description = dom.window.document.querySelector('p')?.textContent || 'Description not available.';
           
           // Generate README content
