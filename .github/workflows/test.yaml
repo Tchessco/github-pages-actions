@@ -1,15 +1,10 @@
-name: Change index.html title
+name: Test index.html title
 
 on:
   push:
     branches:
       - main
   workflow_dispatch: # Allows manual triggering of the workflow
-    inputs:
-      title:
-        description: 'Title to change'
-        required: true
-        default: 'Empty input'
 
 permissions:
   contents: write
@@ -43,7 +38,7 @@ jobs:
           const dom = new JSDOM(htmlContent);
           
           // Extract <title> and first <p> as description
-          const title = '${{ inputs.title }}';
+          const title = dom.window.document.querySelector('title')?.textContent || 'My Project';
           const description = dom.window.document.querySelector('p')?.textContent || 'Description not available.';
           
           // Generate README content
@@ -52,11 +47,11 @@ jobs:
           // Write to README.md
           fs.writeFileSync('README.md', readmeContent);
           "
-
-      - name: git_steps
+      - name: checking_title
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "Auto-generate README from index.html"
-          git push
+            const title = dom.window.document.querySelector('title')?.textContent
+            if (title){
+              exit 0
+            }else {
+              exit 1
+            }
