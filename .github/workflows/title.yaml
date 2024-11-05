@@ -45,7 +45,7 @@ jobs:
           const dom = new JSDOM(htmlContent);
           
           // Extract <title> and first <p> as description
-          const title = ${{ inputs.logLevel }};
+          const title = '${{ inputs.logLevel }}';
           const description = dom.window.document.querySelector('p')?.textContent || 'Description not available.';
           
           // Generate README content
