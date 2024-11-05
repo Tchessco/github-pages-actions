@@ -1,4 +1,4 @@
-# DevOps Study Hub
+# Empty input
 
 
         Embark on a journey to master the art of continuous integration
