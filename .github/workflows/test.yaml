@@ -60,9 +60,7 @@ jobs:
           // Extract <title> and first <p> as description
           const title = dom.window.document.querySelector('title')?.textContent;
 
-          if(false){
-           exit 0;
-          }else{
+
           exit 1;
-          }
+          
           "
