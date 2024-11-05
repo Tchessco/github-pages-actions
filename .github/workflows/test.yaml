@@ -49,9 +49,20 @@ jobs:
           "
       - name: checking_title
         run: |
-            const title = dom.window.document.querySelector('title')?.textContent
-            if (title){
-              exit 0
-            }else {
-              exit 1
-            }
+          node -e "
+          const fs = require('fs');
+          const { JSDOM } = require('jsdom');
+          
+          // Load index.html
+          const htmlContent = fs.readFileSync('index.html', 'utf-8');
+          const dom = new JSDOM(htmlContent);
+
+          // Extract <title> and first <p> as description
+          const title = dom.window.document.querySelector('title')?.textContent;
+
+          if(title){
+           exit 0;
+          }else{
+          exit 1;
+          }
+          "
