@@ -24,7 +24,10 @@ jobs:
         with:
           node-version: '16'
 
-      - name: potato
+      - name: npm_installer
+        run: npm install jsdom
+
+      - name: the_copy_cat
         run: |
           node -e "
           const fs = require('fs');
